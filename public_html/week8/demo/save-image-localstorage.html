@@ -13,17 +13,13 @@
                 text-align: center;
 
             }
-            .over {
-                background: #F7F7F7;
+            #files-img.over {
+                border-color: #D4786A;
             }
 
             input {
                 margin: 0.5em;
                 padding: 0.5em;
-            }
-
-            #img-file-content img {
-                max-width: 100%;
             }
         </style>
     </head>
@@ -34,8 +30,7 @@
             <p>Drag an image file from your computer here</p>
             <p>or</p>
             <p><input type="file" name="picked" /></p> 
-        </div>
-       
+        </div>       
         <div id="img-file-content"></div>
         <canvas></canvas>
         
@@ -89,6 +84,7 @@
                         e.stopPropagation();
 
                     e.dataTransfer.dropEffect = 'copy';
+                    this.classList.add('over');
                 });
 
                 // Event Listener for when the dragged file enters the drop zone.
@@ -112,7 +108,7 @@
 
                     var fileList = e.dataTransfer.files;
                     
-                    window.reviewFiles(fileList);
+                    reviewFiles(fileList);
 
                 });
 
@@ -126,7 +122,7 @@
 
                 SubmitBtn.addEventListener("click", uploadImage);
                 
-                 loadinImage()
+                loadinImage()
                 
             };
             
@@ -135,11 +131,11 @@
                 var imgType = /image\/[jpeg|png|gif]/;
                 /* we can loop but are just working with the first file on the stack */
                 if (fileList.length > 0) {
-                    if (fileList[0].size > 10000000) {
+                    if (fileList[0].size > 1000000) {
                         fileContentPaneImg.innerHTML = "Exceeded filesize limit.";                       
                         imageReady = false;
                     } else if (fileList[0].type.match(imgType)) {
-                        window.readImage(fileList[0]);
+                        readImage(fileList[0]);
                     } else {
                         fileContentPaneImg.innerHTML = "File not supported!";
                         imageReady = false;
@@ -155,7 +151,7 @@
                 readerimg.addEventListener('loadend', readerImgOnload);
                 function readerImgOnload(e) {
                     if (e.target.readyState == FileReader.DONE) {
-                        var img = window.document.createElement('img');
+                        var img = document.createElement('img');
                         img.src = readerimg.result;
                         img.onload = function(){
                             canvas.width = img.width;
@@ -197,8 +193,6 @@
                         ctx.drawImage(img,0,0);
                     }
             }
-           
-
 
         </script>
     </body>

@@ -25,7 +25,10 @@
     </head>
     <body>
         <h2>Drag n Drop Files</h2>
-        <p><input type="button" value="Save" /></p> 
+        <p>
+            <input type="button" value="Save" /> 
+            <input type="button" id="delete" value="Delete" />
+        </p> 
         <div id="files-img">
             <p>Drag an image file from your computer here</p>
             <p>or</p>
@@ -33,7 +36,7 @@
         </div>       
         <div id="img-file-content"></div>
         <canvas></canvas>
-        
+
         <script type="text/javascript">
             /*
              switch(fileList[0].type) {
@@ -57,24 +60,25 @@
              }
              */
             // call initialization file
-            
-            
+
+
             let dropZoneImg = document.querySelector('#files-img');
             let fileUpload = document.querySelector('input[name="picked"]');
             let fileContentPaneImg = document.querySelector('#img-file-content');
             let canvas = document.querySelector('canvas');
             let ctx = canvas.getContext('2d');
-           
+
             let SubmitBtn = document.querySelector('input[type="button"]');
+            let deleteBtn = document.querySelector('#delete');
 
             let imageReady = false,
-                fileToUpload;
+                    fileToUpload;
 
 
-           
+
             document.addEventListener("DOMContentLoaded", window.init);
-           
-            
+
+
             function init() {
                 // Event Listener for when the dragged file is over the drop zone.
                 dropZoneImg.addEventListener('dragover', function (e) {
@@ -107,32 +111,34 @@
                     this.classList.remove('over');
 
                     var fileList = e.dataTransfer.files;
-                    
+
                     reviewFiles(fileList);
 
                 });
 
                 fileUpload.addEventListener("change", function () {
                     var fileList = this.files;
-                   
-                   reviewFiles(fileList);
-                    
+
+                    reviewFiles(fileList);
+
                 });
 
 
                 SubmitBtn.addEventListener("click", uploadImage);
-                
+                deleteBtn.addEventListener("click", deleteImage);
+
                 loadinImage()
-                
-            };
-            
-            
-            function reviewFiles(fileList){
+
+            }
+            ;
+
+
+            function reviewFiles(fileList) {
                 var imgType = /image\/[jpeg|png|gif]/;
                 /* we can loop but are just working with the first file on the stack */
                 if (fileList.length > 0) {
                     if (fileList[0].size > 1000000) {
-                        fileContentPaneImg.innerHTML = "Exceeded filesize limit.";                       
+                        fileContentPaneImg.innerHTML = "Exceeded filesize limit.";
                         imageReady = false;
                     } else if (fileList[0].type.match(imgType)) {
                         readImage(fileList[0]);
@@ -142,8 +148,8 @@
                     }
                 }
             }
-                
-                
+
+
             // Read the contents of a file.
             function readImage(file) {
                 var readerimg = new FileReader();
@@ -153,16 +159,17 @@
                     if (e.target.readyState == FileReader.DONE) {
                         var img = document.createElement('img');
                         img.src = readerimg.result;
-                        img.onload = function(){
+                        img.onload = function () {
                             canvas.width = img.width;
                             canvas.height = img.height;
-                            ctx.drawImage(img,0,0);
+                            ctx.drawImage(img, 0, 0);
                         }
                         fileContentPaneImg.innerHTML = '';
                         imageReady = true;
                         fileToUpload = file;
                     }
-                };
+                }
+                ;
 
             }
 
@@ -170,28 +177,35 @@
 
             function uploadImage() {
                 if (imageReady === true) {
-                     SaveImage();
-                } else {                   
+                    SaveImage();
+                    fileContentPaneImg.innerHTML = "Image Saved";
+                } else {
                     fileContentPaneImg.innerHTML = "Please select a file";
                 }
             }
 
-           
 
-            function SaveImage(data) {
-                localStorage.setItem('img', canvas.toDataURL()) 
+
+            function SaveImage() {
+                localStorage.setItem('img', canvas.toDataURL())
             }
 
-            
+            function deleteImage() {
+                localStorage.removeItem('img')
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+
             function loadinImage() {
-                if ( !localStorage.getItem('img') ) return
+                if (!localStorage.getItem('img'))
+                    return
                 var img = document.createElement('img');
-                    img.src = localStorage.getItem('img');
-                    img.onload = function(){
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img,0,0);
-                    }
+                img.src = localStorage.getItem('img');
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                }
             }
 
         </script>

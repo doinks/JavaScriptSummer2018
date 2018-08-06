@@ -62,129 +62,108 @@
             // call initialization file
 
 
-            let dropZoneImg = document.querySelector('#files-img');
-            let fileUpload = document.querySelector('input[name="picked"]');
-            let fileContentPaneImg = document.querySelector('#img-file-content');
-            let canvas = document.querySelector('canvas');
-            let ctx = canvas.getContext('2d');
+            let dropZoneImg = document.querySelector('#files-img'),
+                fileUpload = document.querySelector('input[name="picked"]'),
+                fileContentPaneImg = document.querySelector('#img-file-content'),
+                canvas = document.querySelector('canvas'),
+                ctx = canvas.getContext('2d'),
+                SubmitBtn = document.querySelector('input[type="button"]'),
+                deleteBtn = document.querySelector('#delete'),
+                imageReady = false,
+                fileToUpload
 
-            let SubmitBtn = document.querySelector('input[type="button"]');
-            let deleteBtn = document.querySelector('#delete');
-
-            let imageReady = false,
-                    fileToUpload;
-
-
-
-            document.addEventListener("DOMContentLoaded", window.init);
-
+            document.addEventListener("DOMContentLoaded", init)
 
             function init() {
                 // Event Listener for when the dragged file is over the drop zone.
-                dropZoneImg.addEventListener('dragover', function (e) {
+                dropZoneImg.addEventListener('dragover', function(e) {
                     if (e.preventDefault)
-                        e.preventDefault();
+                        e.preventDefault()
                     if (e.stopPropagation)
-                        e.stopPropagation();
+                        e.stopPropagation()
 
                     e.dataTransfer.dropEffect = 'copy';
-                    this.classList.add('over');
+                    this.classList.add('over')
                 });
 
                 // Event Listener for when the dragged file enters the drop zone.
-                dropZoneImg.addEventListener('dragenter', function (e) {
-                    this.classList.add('over');
+                dropZoneImg.addEventListener('dragenter', function() {
+                    this.classList.add('over')
                 });
 
                 // Event Listener for when the dragged file leaves the drop zone.
-                dropZoneImg.addEventListener('dragleave', function (e) {
-                    this.classList.remove('over');
+                dropZoneImg.addEventListener('dragleave', function() {
+                    this.classList.remove('over')
                 });
 
                 // Event Listener for when the dragged file dropped in the drop zone.
-                dropZoneImg.addEventListener('drop', function (e) {
+                dropZoneImg.addEventListener('drop', function(e) {
                     if (e.preventDefault)
-                        e.preventDefault();
+                        e.preventDefault()
                     if (e.stopPropagation)
-                        e.stopPropagation();
+                        e.stopPropagation()
 
-                    this.classList.remove('over');
-
-                    var fileList = e.dataTransfer.files;
-
-                    reviewFiles(fileList);
-
+                    this.classList.remove('over')
+                    let fileList = e.dataTransfer.files
+                    reviewFiles(fileList)
                 });
 
-                fileUpload.addEventListener("change", function () {
-                    var fileList = this.files;
+                fileUpload.addEventListener("change", () => {
+                    let fileList = this.files
+                    reviewFiles(fileList)
+                })
 
-                    reviewFiles(fileList);
-
-                });
-
-
-                SubmitBtn.addEventListener("click", uploadImage);
-                deleteBtn.addEventListener("click", deleteImage);
-
+                SubmitBtn.addEventListener("click", uploadImage)
+                deleteBtn.addEventListener("click", deleteImage)
                 loadinImage()
 
             }
-            ;
-
-
+            
             function reviewFiles(fileList) {
-                var imgType = /image\/[jpeg|png|gif]/;
+                let imgType = /image\/[jpeg|png|gif]/
                 /* we can loop but are just working with the first file on the stack */
                 if (fileList.length > 0) {
                     if (fileList[0].size > 1000000) {
-                        fileContentPaneImg.innerHTML = "Exceeded filesize limit.";
+                        fileContentPaneImg.innerHTML = "Exceeded filesize limit."
                         imageReady = false;
                     } else if (fileList[0].type.match(imgType)) {
-                        readImage(fileList[0]);
+                        readImage(fileList[0])
                     } else {
-                        fileContentPaneImg.innerHTML = "File not supported!";
+                        fileContentPaneImg.innerHTML = "File not supported!"
                         imageReady = false;
                     }
                 }
             }
-
 
             // Read the contents of a file.
             function readImage(file) {
-                var readerimg = new FileReader();
-                readerimg.readAsDataURL(file);
-                readerimg.addEventListener('loadend', readerImgOnload);
+                let readerimg = new FileReader()
+                readerimg.readAsDataURL(file)
+                readerimg.addEventListener('loadend', readerImgOnload)
                 function readerImgOnload(e) {
-                    if (e.target.readyState == FileReader.DONE) {
-                        var img = document.createElement('img');
+                    if (e.target.readyState === FileReader.DONE) {
+                        let img = document.createElement('img')
                         img.src = readerimg.result;
-                        img.onload = function () {
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            ctx.drawImage(img, 0, 0);
+                        img.onload = () => {
+                            canvas.width = img.width
+                            canvas.height = img.height
+                            ctx.drawImage(img, 0, 0)
                         }
-                        fileContentPaneImg.innerHTML = '';
-                        imageReady = true;
-                        fileToUpload = file;
+                        fileContentPaneImg.innerHTML = ''
+                        imageReady = true
+                        fileToUpload = file
                     }
                 }
-                ;
-
             }
-
-
 
             function uploadImage() {
                 if (imageReady === true) {
                     SaveImage();
-                    fileContentPaneImg.innerHTML = "Image Saved";
+                    fileContentPaneImg.innerHTML = "Image Saved"
                 } else {
-                    fileContentPaneImg.innerHTML = "Please select a file";
+                    fileContentPaneImg.innerHTML = "Please select a file"
                 }
             }
-
-
 
             function SaveImage() {
                 localStorage.setItem('img', canvas.toDataURL())
@@ -192,19 +171,18 @@
 
             function deleteImage() {
                 localStorage.removeItem('img')
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
             }
-
 
             function loadinImage() {
                 if (!localStorage.getItem('img'))
                     return
-                var img = document.createElement('img');
-                img.src = localStorage.getItem('img');
-                img.onload = function () {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
+                let img = document.createElement('img')
+                img.src = localStorage.getItem('img')
+                img.onload = () => {
+                    canvas.width = img.width
+                    canvas.height = img.height
+                    ctx.drawImage(img, 0, 0)
                 }
             }
 

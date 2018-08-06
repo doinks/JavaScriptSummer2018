@@ -17,9 +17,9 @@
 
         <script>
             
-            var content = document.querySelector('div')
-            var myRequest = 'companies.json'
-            var data = {}
+            let content = document.querySelector('div')
+            let myRequest = 'companies.json'
+            let data = {}
             
             fetch(myRequest).then(handleResponse)
             .then(responseSuccess)

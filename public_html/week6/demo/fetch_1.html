@@ -10,11 +10,11 @@
 
         <script>
             
-            var content = document.querySelector('div')
-            var myRequest = 'users.json'
+            let content = document.querySelector('div')
+            let myRequest = 'users.json'
             
             fetch(myRequest).then(function(response) {
-                var contentType = response.headers.get("content-type")
+                let contentType = response.headers.get("content-type")
                 console.log(response)
                 console.log(contentType)
                 if(contentType && contentType.includes("json")) {

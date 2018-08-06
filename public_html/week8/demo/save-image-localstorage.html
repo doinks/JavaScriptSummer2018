@@ -82,19 +82,19 @@
                     if (e.stopPropagation)
                         e.stopPropagation()
 
-                    e.dataTransfer.dropEffect = 'copy';
+                    e.dataTransfer.dropEffect = 'copy'
                     this.classList.add('over')
-                });
+                })
 
                 // Event Listener for when the dragged file enters the drop zone.
                 dropZoneImg.addEventListener('dragenter', function() {
                     this.classList.add('over')
-                });
+                })
 
                 // Event Listener for when the dragged file leaves the drop zone.
                 dropZoneImg.addEventListener('dragleave', function() {
                     this.classList.remove('over')
-                });
+                })
 
                 // Event Listener for when the dragged file dropped in the drop zone.
                 dropZoneImg.addEventListener('drop', function(e) {
@@ -106,7 +106,7 @@
                     this.classList.remove('over')
                     let fileList = e.dataTransfer.files
                     reviewFiles(fileList)
-                });
+                })
 
                 fileUpload.addEventListener("change", () => {
                     let fileList = this.files
@@ -123,14 +123,14 @@
                 let imgType = /image\/[jpeg|png|gif]/
                 /* we can loop but are just working with the first file on the stack */
                 if (fileList.length > 0) {
-                    if (fileList[0].size > 1000000) {
+                    if (fileList[0].size > 1000000) { // 1MB
                         fileContentPaneImg.innerHTML = "Exceeded filesize limit."
-                        imageReady = false;
+                        imageReady = false
                     } else if (fileList[0].type.match(imgType)) {
                         readImage(fileList[0])
                     } else {
                         fileContentPaneImg.innerHTML = "File not supported!"
-                        imageReady = false;
+                        imageReady = false
                     }
                 }
             }
@@ -143,7 +143,7 @@
                 function readerImgOnload(e) {
                     if (e.target.readyState === FileReader.DONE) {
                         let img = document.createElement('img')
-                        img.src = readerimg.result;
+                        img.src = readerimg.result
                         img.onload = () => {
                             canvas.width = img.width
                             canvas.height = img.height
@@ -158,7 +158,7 @@
 
             function uploadImage() {
                 if (imageReady === true) {
-                    SaveImage();
+                    SaveImage()
                     fileContentPaneImg.innerHTML = "Image Saved"
                 } else {
                     fileContentPaneImg.innerHTML = "Please select a file"

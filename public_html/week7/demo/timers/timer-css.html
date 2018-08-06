@@ -26,32 +26,32 @@
              * 
              * */
             
-            var div = document.querySelector('#test');
-            var btn = document.querySelector('#borderBtn');
+            let div = document.querySelector('#test');
+            let btn = document.querySelector('#borderBtn');
             btn.addEventListener('click', startUpdate);
             
-            var borderSize = 1;
-            var borderTimer = null;
-            var speed = 10;
+            let borderSize = 1;
+            let borderTimer = null;
+            let speed = 10;
             
             function updateBorder() {
-                window.borderSize++;
+                borderSize++;
                 //console.log(borderSize);
-                window.div.style.borderRadius = window.borderSize + 'px';
-                if ( window.borderSize > 100 ) {
-                    window.clearInterval(borderTimer);
+                div.style.borderRadius = borderSize + 'px';
+                if ( borderSize > 100 ) {
+                    clearInterval(borderTimer);
                     resetBorder();                    
                 }
             }
             
             function resetBorder() {
-                window.borderTimer = null;
-                window.borderSize = 1;
+                borderTimer = null;
+                borderSize = 1;
             }
             
             function startUpdate() {
-                if ( null === window.borderTimer ) {
-                    window.borderTimer = window.setInterval(updateBorder, window.speed);
+                if ( null === borderTimer ) {
+                    borderTimer = setInterval(updateBorder, speed);
                 }
             }
             

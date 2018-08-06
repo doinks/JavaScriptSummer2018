@@ -22,20 +22,20 @@
                     These timers are part of the window object.
              */
             
-            var h1 = document.querySelector('h1');
-            var colorNum = 0;
-            var colortimer =  window.setTimeout(updateColor, 100);
+            let h1 = document.querySelector('h1');
+            let colorNum = 0;
+            let colortimer =  setTimeout(updateColor, 100);
             function updateColor() {
                 // rgb( 0,0,0 )
                 //document.body.style.backgroundColor
-                h1.style.color = `rgb(${window.colorNum},${window.colorNum+10},${window.colorNum+20})`; ;
+                h1.style.color = `rgb(${colorNum},${colorNum+10},${colorNum+20})`; ;
                   //style.background-color - incorrect CSS styles in JS are camelcase
                   //style.backgroundColor - correct
-                  window.colorNum += 10;
-                  if ( window.colorNum <= 235 ) {
-                    window.setTimeout(updateColor, 100);
+                  colorNum += 10;
+                  if ( colorNum <= 235 ) {
+                    setTimeout(updateColor, 100);
                   } else {
-                      window.clearTimeout(window.colortimer);
+                      clearTimeout(colortimer);
                   }
               } 
             

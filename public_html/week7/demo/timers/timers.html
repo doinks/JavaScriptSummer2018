@@ -34,10 +34,10 @@
             
     
     
-            var h1 = document.querySelector('#counter');
-            var count = 1000;
+            let h1 = document.querySelector('#counter');
+            let count = 1000;
             
-            var time = new Date();
+            let time = new Date();
             
             
             function updateTime() {
@@ -57,9 +57,9 @@
             
           
           
-          var colors = ['red', 'green', 'blue', 'silver'];
-          var colorcount = 0;
-          var colortimer =  window.setTimeout(updateColor, 1000);
+          let colors = ['red', 'green', 'blue', 'silver'];
+          let colorcount = 0;
+          let colortimer =  window.setTimeout(updateColor, 1000);
           function updateColor() {
                                  
                 h1.style.color = colors[colorcount];
